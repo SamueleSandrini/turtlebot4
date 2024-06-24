@@ -28,7 +28,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 
 from launch_ros.actions import PushRosNamespace, SetRemap
-
+from launch_ros.actions import Node
 
 ARGUMENTS = [
     DeclareLaunchArgument('use_sim_time', default_value='false',
@@ -48,7 +48,8 @@ ARGUMENTS = [
 
 def launch_setup(context, *args, **kwargs):
     pkg_nav2_bringup = get_package_share_directory('nav2_bringup')
-
+    pkg_turtlebot4_navigation = get_package_share_directory('turtlebot4_navigation')
+    
     nav2_params = LaunchConfiguration('params_file')
     namespace = LaunchConfiguration('namespace')
     use_sim_time = LaunchConfiguration('use_sim_time')
@@ -82,4 +83,11 @@ def launch_setup(context, *args, **kwargs):
 def generate_launch_description():
     ld = LaunchDescription(ARGUMENTS)
     ld.add_action(OpaqueFunction(function=launch_setup))
+    # tf_show = Node(
+    #     package='rqt_tf_tree',
+    #     executable='rqt_tf_tree',
+    #     output='screen',
+    #     namespace='robot2',
+    # )
+    # ld.add_action(tf_show)
     return ld
